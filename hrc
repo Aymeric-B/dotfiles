@@ -1,0 +1,86 @@
+[1mdiff --git a/aliases b/aliases[m
+[1mindex bc42ac6..bfc5448 100644[m
+Binary files a/aliases and b/aliases differ
+[1mdiff --git a/gitconfig b/gitconfig[m
+[1mindex e606bd1..371400d 100644[m
+[1m--- a/gitconfig[m
+[1m+++ b/gitconfig[m
+[36m@@ -11,7 +11,7 @@[m
+ [m
+ [core][m
+   pager = less -FRSX[m
+[31m-	editor = subl -n -w  >/dev/null 2>&1[m
+[32m+[m	[32meditor = code --wait[m
+ [m
+ [alias][m
+   co = checkout[m
+[1mdiff --git a/zshrc b/zshrc[m
+[1mindex 051cf49..53a4839 100644[m
+[1m--- a/zshrc[m
+[1m+++ b/zshrc[m
+[36m@@ -4,11 +4,14 @@[m [mZSH=$HOME/.oh-my-zsh[m
+ ZSH_THEME="robbyrussell"[m
+ [m
+ # Useful oh-my-zsh plugins for Le Wagon bootcamps[m
+[31m-plugins=(git gitfast last-working-dir common-aliases sublime zsh-syntax-highlighting history-substring-search pyenv)[m
+[32m+[m[32mplugins=(git gitfast last-working-dir common-aliases zsh-syntax-highlighting history-substring-search pyenv)[m
+ [m
+ # (macOS-only) Prevent Homebrew from reporting - https://github.com/Homebrew/brew/blob/master/docs/Analytics.md[m
+ export HOMEBREW_NO_ANALYTICS=1[m
+ [m
+[32m+[m[32m# Disable warning about insecure completion-dependent directories[m
+[32m+[m[32mZSH_DISABLE_COMPFIX=true[m
+[32m+[m
+ # Actually load Oh-My-Zsh[m
+ source "${ZSH}/oh-my-zsh.sh"[m
+ unalias rm # No interactive rm by default (brought by plugins/common-aliases)[m
+[36m@@ -18,8 +21,7 @@[m [mexport PATH="${HOME}/.rbenv/bin:${PATH}" # Needed for Linux/WSL[m
+ type -a rbenv > /dev/null && eval "$(rbenv init -)"[m
+ [m
+ # Load pyenv (to manage your Python versions)[m
+[31m-export PATH="${HOME}/.pyenv/bin:${PATH}" # Needed for Linux/WSL[m
+[31m-export PYENV_VIRTUALENV_DISABLE_PROMPT=1 # https://github.com/pyenv/pyenv-virtualenv/issues/135[m
+[32m+[m[32mexport PYENV_VIRTUALENV_DISABLE_PROMPT=1[m
+ type -a pyenv > /dev/null && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)" && RPROMPT+='[🐍 $(pyenv_prompt_info)]'[m
+ [m
+ # Load nvm (to manage your node versions)[m
+[36m@@ -30,19 +32,21 @@[m [mexport NVM_DIR="$HOME/.nvm"[m
+ # Call `nvm use` automatically in a directory with a `.nvmrc` file[m
+ autoload -U add-zsh-hook[m
+ load-nvmrc() {[m
+[31m-  local node_version="$(nvm version)"[m
+[31m-  local nvmrc_path="$(nvm_find_nvmrc)"[m
+[32m+[m[32m  if nvm -v &> /dev/null; then[m
+[32m+[m[32m    local node_version="$(nvm version)"[m
+[32m+[m[32m    local nvmrc_path="$(nvm_find_nvmrc)"[m
+ [m
+[31m-  if [ -n "$nvmrc_path" ]; then[m
+[31m-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")[m
+[32m+[m[32m    if [ -n "$nvmrc_path" ]; then[m
+[32m+[m[32m      local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")[m
+ [m
+[31m-    if [ "$nvmrc_node_version" = "N/A" ]; then[m
+[31m-      nvm install[m
+[31m-    elif [ "$nvmrc_node_version" != "$node_version" ]; then[m
+[31m-      nvm use --silent[m
+[32m+[m[32m      if [ "$nvmrc_node_version" = "N/A" ]; then[m
+[32m+[m[32m        nvm install[m
+[32m+[m[32m      elif [ "$nvmrc_node_version" != "$node_version" ]; then[m
+[32m+[m[32m        nvm use --silent[m
+[32m+[m[32m      fi[m
+[32m+[m[32m    elif [ "$node_version" != "$(nvm version default)" ]; then[m
+[32m+[m[32m      nvm use default --silent[m
+     fi[m
+[31m-  elif [ "$node_version" != "$(nvm version default)" ]; then[m
+[31m-    nvm use default --silent[m
+   fi[m
+ }[m
+ type -a nvm > /dev/null && add-zsh-hook chpwd load-nvmrc[m
+[36m@@ -59,4 +63,5 @@[m [mexport PATH="./bin:./node_modules/.bin:${PATH}:/usr/local/sbin"[m
+ # Encoding stuff for the terminal[m
+ export LANG=en_US.UTF-8[m
+ export LC_ALL=en_US.UTF-8[m
+[31m-export BUNDLER_EDITOR="subl $@ >/dev/null 2>&1 -a"[m
+[32m+[m
+[32m+[m[32mexport BUNDLER_EDITOR=code[m
+\ No newline at end of file[m
